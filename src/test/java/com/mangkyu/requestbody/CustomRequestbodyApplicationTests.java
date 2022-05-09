@@ -66,9 +66,7 @@ class CustomRequestbodyApplicationTests {
         );
 
         // then
-        result.andExpect(status().isOk())
-                        .andExpect(jsonPath("name").value("test-name"))
-                        .andExpect(jsonPath("desc").value("desc"));
+        result.andExpect(status().isBadRequest());
     }
 
 }
