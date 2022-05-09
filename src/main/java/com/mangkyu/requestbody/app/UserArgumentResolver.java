@@ -48,8 +48,7 @@ public class UserArgumentResolver implements HandlerMethodArgumentResolver {
             return (User) requestBodyProcessor.resolveArgument(parameter, mavContainer, webRequest, binderFactory);
         } catch (MethodArgumentNotValidException e) {
             throw e;
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             log.warn("Fail to resolve Argument", e);
         }
 
