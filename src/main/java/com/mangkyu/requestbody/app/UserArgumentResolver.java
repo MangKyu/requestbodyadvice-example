@@ -20,7 +20,7 @@ public class UserArgumentResolver implements HandlerMethodArgumentResolver {
 
     @Override
     public boolean supportsParameter(final MethodParameter parameter) {
-        return true;
+        return parameter.hasParameterAnnotation(UserAnnotation.class);
     }
 
     @Override
