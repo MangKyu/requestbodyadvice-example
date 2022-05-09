@@ -14,6 +14,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -43,7 +44,9 @@ class CustomRequestbodyApplicationTests {
         );
 
         // then
-        System.out.println(result.andExpect(status().isOk()).andReturn().getResponse().getContentAsString());
+        result.andExpect(status().isOk())
+                        .andExpect(jsonPath("name").value("test-name"))
+                        .andExpect(jsonPath("desc").value("desc"));
     }
 
 }

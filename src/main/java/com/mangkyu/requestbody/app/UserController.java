@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
 
     @PostMapping("/users")
-    public ResponseEntity<User> users(@UserAnnotation User user) {
+    public ResponseEntity<User> users(@DefaultUserRequestBody User user) {
         return ResponseEntity.ok(user);
     }
 

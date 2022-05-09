@@ -1,5 +1,6 @@
 package com.mangkyu.requestbody.app;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.web.bind.support.WebDataBinderFactory;
@@ -10,23 +11,45 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestResponseBody
 
 import java.util.List;
 
+@Slf4j
 public class UserArgumentResolver implements HandlerMethodArgumentResolver {
 
-    private final RequestResponseBodyMethodProcessor processor;
+    private final RequestResponseBodyMethodProcessor requestBodyProcessor;
 
     public UserArgumentResolver(final List<HttpMessageConverter<?>> messageConverters) {
-        processor = new RequestResponseBodyMethodProcessor(messageConverters);
+        requestBodyProcessor = new RequestResponseBodyMethodProcessor(messageConverters);
     }
 
     @Override
     public boolean supportsParameter(final MethodParameter parameter) {
-        return parameter.hasParameterAnnotation(UserAnnotation.class);
+        return parameter.hasParameterAnnotation(DefaultUserRequestBody.class);
     }
 
     @Override
-    public Object resolveArgument(final MethodParameter parameter, final ModelAndViewContainer mavContainer, final NativeWebRequest webRequest, final WebDataBinderFactory binderFactory) throws Exception {
-        final User user = (User) processor.resolveArgument(parameter, mavContainer, webRequest, binderFactory);
+    public Object resolveArgument(
+            final MethodParameter parameter,
+            final ModelAndViewContainer mavContainer,
+            final NativeWebRequest webRequest,
+            final WebDataBinderFactory binderFactory) {
+
+        final User user = resolveUserArgument(parameter, mavContainer, webRequest, binderFactory);
         user.setDesc("desc");
         return user;
     }
+
+    private User resolveUserArgument(
+            final MethodParameter parameter,
+            final ModelAndViewContainer mavContainer,
+            final NativeWebRequest webRequest,
+            final WebDataBinderFactory binderFactory) {
+
+        try {
+            return (User) requestBodyProcessor.resolveArgument(parameter, mavContainer, webRequest, binderFactory);
+        } catch (Exception e) {
+            log.warn("Fail to resolve Argument", e);
+        }
+
+        return new User();
+    }
+
 }
