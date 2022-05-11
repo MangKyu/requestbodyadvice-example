@@ -1,8 +1,8 @@
 package com.mangkyu.requestbody.app;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.MethodParameter;
-import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
@@ -10,16 +10,11 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 import org.springframework.web.servlet.mvc.method.annotation.RequestResponseBodyMethodProcessor;
 
-import java.util.List;
-
 @Slf4j
+@RequiredArgsConstructor
 public class UserArgumentResolver implements HandlerMethodArgumentResolver {
 
     private final RequestResponseBodyMethodProcessor requestBodyProcessor;
-
-    public UserArgumentResolver(final List<HttpMessageConverter<?>> messageConverters) {
-        requestBodyProcessor = new RequestResponseBodyMethodProcessor(messageConverters);
-    }
 
     @Override
     public boolean supportsParameter(final MethodParameter parameter) {
