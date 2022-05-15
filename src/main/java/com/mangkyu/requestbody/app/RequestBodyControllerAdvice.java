@@ -14,7 +14,7 @@ public class RequestBodyControllerAdvice implements RequestBodyAdvice {
 
     @Override
     public boolean supports(final MethodParameter methodParameter, final Type targetType, final Class<? extends HttpMessageConverter<?>> converterType) {
-        return true;
+        return methodParameter.getContainingClass() == UserController.class && targetType.getTypeName().equals(User.class.getTypeName());
     }
 
     @Override
